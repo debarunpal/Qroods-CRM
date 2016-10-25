@@ -1,0 +1,27 @@
+<div class="row" ng-hide="order._id">
+  <div class="col-md-6">
+      <h2>Create new purchase</h2>
+  </div>
+</div>
+<div class="container">
+    <p>
+      <label>Items</label> 
+	  <ul ng-repeat="item in items">
+		  <li ng-model="purchase.itemId">{{ item.name }}</li>
+		  <label for="">Quantity: </label>
+		  <input type="number" ng-model="purchase.quantity" placeholder="Qty" ng-change="changeQuantity(item.id, purchase.quantity)">
+	</ul>
+    </p>
+	<p>
+		<label>Total Purchase Amount:</label> 
+        <input id="totalAmount" class="form-control" type="text" ng-model="purchase.totalAmount" required> 
+	</p>
+	<p>
+		<pre>{{ formData }}</pre>
+	</p>
+    <p>
+      <button style="margin-top:20px" class="btn btn-default" ng-click="savePurchase(purchase)">Save</button>
+      <button style="margin-top:20px" class="btn btn-default" ng-click="back()">Back</button>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{
+  "name": "MEAN CRM to store Customer Contact List",
+  "description": "A CRM built out of MEAN app that allows users to manage customer contact lists. Built by Qroods.",
+  "repository": "https://github.com/chrisckchang/mean-contactlist",
+  "logo": "https://mlab.com/company/brand/resources/mLab-logo-onlight.png",
+  "keywords": ["node", "express", "angular", "MEAN", "mongodb", "REST", "API"],
+  "addons": ["mongolab"]
+}

@@ -26,12 +26,12 @@
       <input id="name" class="form-control" type="text" ng-model="contact.phone.work"> 
     </p>
     <p>
-      <label>Address</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.address"> 
+      <label>Date of Birth</label> 
+		<input id="name" class="form-control input-group date" type="date" data-provide="datepicker" ng-model="contact.dob"> 
     </p>
-    <p>
-      <label>Twitter Handle</label> 
-      <input id="name" class="form-control" type="text" ng-model="contact.twitter"> 
+    <p> 
+      <label>Date of Anniversary</label> 
+      <input id="name" class="form-control input-group date" type="date" data-provide="datepicker" ng-model="contact.doa">  
     </p>
     <p>
       <button style="margin-top:20px" class="btn btn-default" ng-click="saveContact(contact)">Save</button>

@@ -18,6 +18,14 @@ angular.module("contactsApp", ['ngRoute'])
                 controller: "EditContactController",
                 templateUrl: "contact.html"
             })
+			.when("/contact/:contactId/orders", {
+                controller: "NewPurchaseController",
+                templateUrl: "add-purchase.html"
+            })
+			.when("/contact/:contactId/orders/:orderId", {
+                controller: "EditPurchaseController",
+                templateUrl: "add-purchase.html"
+            })
             .otherwise({
                 redirectTo: "/"
             })
@@ -70,6 +78,54 @@ angular.module("contactsApp", ['ngRoute'])
                 });
         }
     })
+	.service("Orders", function($http) {
+        this.getOrders = function() {
+            return $http.get("/contact/" + contactId + "/order").
+                then(function(response) {
+                    return response;
+                }, function(response) {
+                    alert("Error finding orders.");
+                });
+        }
+        this.createOrder = function(contactId, order) {
+            return $http.post("/contact/" + contactId + "/order", order).
+                then(function(response) {
+                    return response;
+                }, function(response) {
+                    alert("Error creating order.");
+                });
+        }
+        this.getOrder = function(orderId) {
+            var url = "/contact/" + contactId + "/order/" + orderId;
+            return $http.get(url).
+                then(function(response) {
+                    return response;
+                }, function(response) {
+                    alert("Error finding this order.");
+                });
+        }
+        this.editOrder = function(order) {
+            var url = "/contact/" + contactId + "/order/" + order._id;
+            console.log(order._id);
+            return $http.put(url, order).
+                then(function(response) {
+                    return response;
+                }, function(response) {
+                    alert("Error editing this order.");
+                    console.log(response);
+                });
+        }
+        this.deleteOrder = function(orderId) {
+            var url = "/contact/" + contactId + "/order/" + orderId;
+            return $http.delete(url).
+                then(function(response) {
+                    return response;
+                }, function(response) {
+                    alert("Error deleting this order.");
+                    console.log(response);
+                });
+        }
+    })
     .controller("ListController", function(contacts, $scope) {
         $scope.contacts = contacts.data;
     })
@@ -87,9 +143,29 @@ angular.module("contactsApp", ['ngRoute'])
             });
         }
     })
-    .controller("EditContactController", function($scope, $routeParams, Contacts) {
+    .controller("EditContactController", function($scope, $routeParams, Contacts, Orders) {
         Contacts.getContact($routeParams.contactId).then(function(doc) {
             $scope.contact = doc.data;
+			$scope.items = [{
+				'id': '1',
+				name: 'Jeans'
+			  }, {
+				'id': '2',
+				name: 'T-Shirts'
+			  }, {
+				'id': '3',
+				name: 'Lingerie'
+			  }, {
+				'id': '4',
+				name: 'Shirts'
+			  }, {
+				'id': '5',
+				name: 'Kurtis'
+			  }, {
+				'id': '6',
+				name: 'Denims'
+			  }];
+			  $scope.formData = [];
         }, function(response) {
             alert(response);
         });
@@ -113,4 +189,40 @@ angular.module("contactsApp", ['ngRoute'])
         $scope.deleteContact = function(contactId) {
             Contacts.deleteContact(contactId);
         }
-    });
+		
+		//Purchase controller methods goes here:
+		$scope.newPurchase = function() {
+            $scope.editMode = true;
+            $scope.contactFormUrl = "add-purchase.html";
+        }
+		
+		$scope.saveOrder = function(contact, order) {
+			Orders.createOrder(order).then(function(doc) {
+				var orderUrl = "/contact/" + contact._id + "/order/" + doc.data._id;
+				$location.path(orderUrl);
+			}, function(response) {
+				alert(response);
+			});
+		}
+	
+		$scope.changeQuantity = function (itemId, quantity) {
+		var newItem = true;
+		angular.forEach($scope.formData, function (value, index) {
+		  console.log(value);
+		  console.log(index);
+		  if (value.item_id === itemId) {
+			//remove if quantity 0 or null
+			if (quantity === 0 || quantity === null) {
+			  $scope.formData.splice(index, 1);
+			}else {
+			  $scope.formData[index].quantity = quantity;
+			}
+			newItem = false;
+		  }
+		});
+		
+		if (newItem) {
+			$scope.formData.push({item_id: itemId, quantity: quantity});
+		}
+    }
+    })

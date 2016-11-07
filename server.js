@@ -2,9 +2,11 @@ var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
+var toastr = require("toastr");
 var ObjectID = mongodb.ObjectID;
 
 var CONTACTS_COLLECTION = "contacts";
+var PURCHASE_COLLECTION = "orders";
 //var MONGODB_URI = "mongodb://127.0.0.1:27017/qrocrm";
 
 var app = express();
@@ -110,3 +112,74 @@ app.delete("/contacts/:id", function(req, res) {
     }
   });
 });
+
+// ORDERS API ROUTES BELOW
+
+/*  "/orders"
+ *    GET: finds all orders
+ *    POST: creates a new order
+ */
+app.get("/orders", function(req, res) {
+  db.collection(PURCHASE_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get orders.");
+    } else {
+      res.status(200).json(docs);  
+    }
+  });
+});
+
+app.post("/orders", function(req, res) {
+  var newOrder = req.body;
+  newOrder.createDate = new Date();
+
+  if (!(req.body.name || req.body.quantity || req.body.totalAmount)) {
+    handleError(res, "Invalid user input", "Must provide all required fields.", 400);
+  }
+
+  db.collection(PURCHASE_COLLECTION).insertOne(newOrder, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to create new order.");
+    } else {
+      res.status(201).json(doc.ops[0]);
+    }
+  });
+
+/*  "/contacts/:id/orders/:id"
+ *    GET: find order by id
+ *    PUT: update order by id
+ *    DELETE: deletes order by id
+ */
+app.get("/contacts/:id/orders/:id", function(req, res) {
+  db.collection(PURCHASE_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get order");
+    } else {
+      res.status(200).json(doc);  
+    }
+  });
+});
+
+app.put("/contacts/:id/orders/:id", function(req, res) {
+  var updateDoc = req.body;
+  delete updateDoc._id;
+
+  db.collection(PURCHASE_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to update order");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.delete("/contacts/:id/orders/:id", function(req, res) {
+  db.collection(PURCHASE_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+    if (err) {
+      handleError(res, err.message, "Failed to delete order");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+})

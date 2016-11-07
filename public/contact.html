@@ -14,12 +14,12 @@
 </div>
 <div ng-hide="editMode" class="container">
   <div>
-    <p ng-if="contact.email">email: <a ng-href="mailto:{{ contact.email }}" target="_blank">{{ contact.email }}</a></p>
-    <p ng-if="contact.phone.mobile">phone (m): {{ contact.phone.mobile }} </p>
-    <p ng-if="contact.phone.work">phone (w): {{ contact.phone.work }} </p>
-    <p ng-if="contact.address"> address: {{ contact.address }} </p>
-    <p ng-if="contact.twitter"> twitter: <a ng-href="https://twitter.com/{{ contact.twitter }}" target="_blank">@{{ contact.twitter }}</a></p>
+    <p ng-if="contact.email">Email: <a ng-href="mailto:{{ contact.email }}" target="_blank">{{ contact.email }}</a></p>
+    <p ng-if="contact.phone.mobile">Phone (M): {{ contact.phone.mobile }} </p>
+    <p ng-if="contact.dob">DoB: {{ contact.dob }} </p>
+    <p ng-if="contact.doa">DoA: {{ contact.doa }} </p>
     <p>
+	  <button style="margin-top:20px" class="btn btn-default" ng-click="newPurchase()">Add Purchase</button>
       <button style="margin-top:20px" class="btn btn-default" ng-click="toggleEdit()">Edit</button>
       <a style="margin-top:20px" class="btn btn-default" href="#/">Back</a>
     </p>

@@ -1,0 +1,64 @@
+extends main
+include mixins
+
+block vars
+  - var hasToolbar = false
+block content
+  div(ng-app='allcount', ng-controller='EntityViewController')
+     +defaultList()
+     .container.screen-container(ng-cloak)
+       .row(ng-controller="PosController")
+         .col-md-8
+           .items-bar.row.btn-toolbar(lc-list="'Item'", paging="{}")
+             .col-lg-4.col-md-6.col-xs-12(ng-repeat="item in items")
+               button.btn.btn-lg.btn-block.btn-default(ng-click="addItem(item)")
+                 p {{item.name}}
+                 p {{(item.price / 100) | currency}}
+           .container-fluid
+             h1 Total: {{viewState.editForm.entity().total/100 | currency}}      
+           .row.btn-toolbar
+             .col-md-4
+               button.btn.btn-lg.btn-danger.btn-block(ng-click="deleteEntity()", ng-disabled="!viewState.formEntityId") Cancel
+             .col-md-4(ng-hide='viewState.isFormEditing')
+               +startFormEditingButton()(ng-disabled="!viewState.formEntityId").btn-block.btn-lg
+             .col-md-4(ng-show='viewState.isFormEditing')  
+               +doneFormEditingButton()(ng-disabled="!viewState.formEntityId").btn-block.btn-lg
+             .col-md-4  
+               button.btn.btn-lg.btn-success.btn-block(ng-click="viewState.mode = 'list'; viewState.formEntityId = undefined", ng-disabled="!viewState.formEntityId") Finish
+         .col-md-4     
+           +defaultEditForm()(ng-show="true")
+             +defaultFormTemplate()
+
+block js
+  +entityJs()
+  script.
+    angular.module('allcount').controller('PosController', ['$scope', 'lcApi', '$q', function ($scope, lcApi, $q) {
+      $scope.addItem = function (item) {
+        var promise;
+        if (!$scope.viewState.formEntityId) {
+          promise = lcApi.createEntity({entityTypeId: 'Order'}, {}).then(function (orderId) {
+            $scope.navigateTo(orderId)
+            return orderId;
+          })
+        } else {
+          promise = $q.when($scope.viewState.formEntityId);
+        }
+        promise.then(function (orderId) {
+          return lcApi.findRange({entityTypeId: 'OrderItem'}, {filtering: {order: orderId}}).then(function (items) {
+            var existingOrderItem = _.find(items, function (i) {
+              return i.item.id === item.id;
+            })
+            return (existingOrderItem ? 
+              lcApi.updateEntity({entityTypeId: 'OrderItem'}, {id: existingOrderItem.id, quantity: 1 + existingOrderItem.quantity}) : 
+              lcApi.createEntity({entityTypeId: 'OrderItem'}, {order: {id: orderId}, item: item, quantity: 1})
+              ).then(function () {
+                return $scope.editForm.reloadEntity();
+              })
+          })
+        })
+      }
+    }])
+  style.
+    .items-bar .btn-block {
+      margin-bottom: 10px;
+    }

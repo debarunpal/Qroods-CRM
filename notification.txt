@@ -1,0 +1,4 @@
+v1.0:
+
+1. Change in index.jade file (...node_modules\allcountjs\views)
+    Edit Line No.12; change col-lg-4 to col-lg-3

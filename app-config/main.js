@@ -101,7 +101,7 @@ A.app({
       Order: {
         fields: {
           number: Fields.integer("Order #"),
-		  customer: Fields.("Contact", "Contact"),
+          phone: Fields.reference("Contact", "Contact"),
           date: Fields.date("Date"),
           total: Fields.money("Total").computed('sum(orderItems.finalPrice)'),
           orderItems: Fields.relation("Items", "OrderItem", "order")

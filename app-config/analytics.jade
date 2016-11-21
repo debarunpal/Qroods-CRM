@@ -1,0 +1,42 @@
+extends main
+include mixins
+
+block vars
+  - var hasToolbar = false
+block content
+  div(ng-app='allcount', ng-controller='EntityViewController')
+     a(href="http://139.59.36.89/analytics.html" target="_blank") Click here to find your data
+
+block js
+  +entityJs()
+  script.
+    angular.module('allcount').controller('PosController', ['$scope', 'lcApi', '$q', function ($scope, lcApi, $q) {
+      $scope.addItem = function (item) {
+        var promise;
+        if (!$scope.viewState.formEntityId) {
+          promise = lcApi.createEntity({entityTypeId: 'Order'}, {}).then(function (orderId) {
+            $scope.navigateTo(orderId)
+            return orderId;
+          })
+        } else {
+          promise = $q.when($scope.viewState.formEntityId);
+        }
+        promise.then(function (orderId) {
+          return lcApi.findRange({entityTypeId: 'OrderItem'}, {filtering: {order: orderId}}).then(function (items) {
+            var existingOrderItem = _.find(items, function (i) {
+              return i.item.id === item.id;
+            })
+            return (existingOrderItem ? 
+              lcApi.updateEntity({entityTypeId: 'OrderItem'}, {id: existingOrderItem.id, quantity: 1 + existingOrderItem.quantity}) : 
+              lcApi.createEntity({entityTypeId: 'OrderItem'}, {order: {id: orderId}, item: item, quantity: 1})
+              ).then(function () {
+                return $scope.editForm.reloadEntity();
+              })
+          })
+        })
+      }
+    }])
+  style.
+    .items-bar .btn-block {
+      margin-bottom: 10px;
+    }

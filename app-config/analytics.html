@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>CRM | Analytics</title>
+  <script type="text/javascript">
+	window.onload = function () {
+		var categoryChart = new CanvasJS.Chart("categoryChartContainer",
+		{
+			title:{
+				text: "Top Categories of the Year"
+			},
+			animationEnabled: true,
+			legend:{
+				verticalAlign: "bottom",
+				horizontalAlign: "center"
+			},
+			data: [
+			{       
+				type: "pie",
+				showInLegend: true,
+				toolTipContent: "{name}: <strong>{y}%</strong>",
+				indexLabel: "{name} {y}%",
+				dataPoints: [
+					{  y: 35, name: "Tshirt", exploded: true},
+					{  y: 20, name: "Jeans"},
+					{  y: 18, name: "Shirts"},
+					{  y: 15, name: "Lingerie"},
+					{  y: 5,  name: "Accessories"},
+					{  y: 7,  name: "Misc"}
+				]
+		}
+		]
+		});
+		categoryChart.render();
+
+		var customerChart = new CanvasJS.Chart("customerChartContainer",
+		{
+			title:{
+				text: "Top Customers of the Year"
+			},
+			animationEnabled: true,
+			legend:{
+				verticalAlign: "bottom",
+				horizontalAlign: "center"
+			},
+			data: [
+			{       
+				type: "pie",
+				showInLegend: true,
+				toolTipContent: "{name}: <strong>{y}%</strong>",
+				indexLabel: "{name} {y}%",
+				dataPoints: [
+					{  y: 50, name: "Monthly", exploded: true},
+					{  y: 20, name: "Quarterly"},
+					{  y: 30,  name: "Yearly"}
+				]
+		}
+		]
+		});
+		customerChart.render();
+
+		var shoppingChart = new CanvasJS.Chart("shoppingChartContainer",
+		{
+			title:{
+				text: "Shopping Trend Analytics"
+			},
+			animationEnabled: true,
+			legend:{
+				verticalAlign: "bottom",
+				horizontalAlign: "center"
+			},
+			data: [
+			{       
+				type: "pie",
+				showInLegend: true,
+				toolTipContent: "{name}: <strong>{y}%</strong>",
+				indexLabel: "{name} {y}%",
+				dataPoints: [
+					{  y: 45, name: "Sunday", exploded: true},
+					{  y: 25, name: "Saturday"},
+					{  y: 10,  name: "Monday"},
+					{  y: 5, name: "Tuesday"},
+					{  y: 3, name: "Wednesday"},
+					{  y: 4, name: "Thursday"},
+					{  y: 8, name: "Friday"}
+				]
+		}
+		]
+		});
+		shoppingChart.render();
+
+		var shoppingGenderChart = new CanvasJS.Chart("shoppingGenderChartContainer",
+		{
+			title:{
+				text: "Shopping Gender Analytics"
+			},
+			animationEnabled: true,
+			legend:{
+				verticalAlign: "bottom",
+				horizontalAlign: "center"
+			},
+			data: [
+			{       
+				type: "pie",
+				showInLegend: true,
+				toolTipContent: "{name}: <strong>{y}%</strong>",
+				indexLabel: "{name} {y}%",
+				dataPoints: [
+					{  y: 55, name: "Women", exploded: true},
+					{  y: 25, name: "Girls"},
+					{  y: 10,  name: "Men"},
+					{  y: 10, name: "Boys"}
+				]
+		}
+		]
+		});
+		shoppingGenderChart.render();
+	}
+	</script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
+ </head>
+ <body>
+ <div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<div id="categoryChartContainer" style="height: 300px; width: 100%;"></div>
+		</div>
+		<div class="col-md-6">
+			<div id="customerChartContainer" style="height: 300px; width: 100%;"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div id="shoppingChartContainer" style="height: 300px; width: 100%;"></div>
+		</div>
+		<div class="col-md-6">
+			<div id="shoppingGenderChartContainer" style="height: 300px; width: 100%;"></div>
+		</div>
+	</div>
+
+ </div>
+ </body>
+</html>

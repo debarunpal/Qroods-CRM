@@ -1,12 +1,23 @@
 {
   "name": "cusdevcrm-allcount",
   "version": "1.0.0",
+  "description": "Qroods CRM based out in MEAN and built upon AllcountJS.",
   "author": {},
   "dependencies": {
-    "allcountjs": "^1.14.5"
+    "allcountjs": "^1.14.5",
+    "angular-chart.js": "^1.0.3",
+    "grunt": "^1.0.1",
+    "gulp": "^3.9.1",
+    "mongodb": "^2.2.11",
+    "mongoose": "^4.6.8"
   },
   "scripts": {
     "start": "./node_modules/.bin/allcountjs --app app-config"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/debarunpal/Qroods-CRM.git"
+  },
+  "license": "ISC",
   "allcountjsTemplate": "twenty-two-lines"
 }

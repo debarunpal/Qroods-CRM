@@ -74,10 +74,12 @@ A.app({
       },
 	  Analytics: {
 		fields: {
-		  firstName: Fields.text("First name").required(),
-		  lastName: Fields.text("Last name").required(),
-          email: Fields.text("Email").required(),
-          phone: Fields.text("Phone").required()
+
+        },
+		views: {
+          Analytics: {
+            customView: 'analytics'
+          }
         }
 	  },
 	  Transaction: {

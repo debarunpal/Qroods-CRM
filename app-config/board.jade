@@ -1,6 +1,7 @@
 extends project/card-board    
 block panelBody    
   .panel-body    
-    h4 {{item.name}}    
-    p {{item.company}}    
-    p {{item.lastContactDate | date}}
+    h4 {{contact.fullName}}    
+    p {{contact.email}}
+    p {{contact.phone}}
+    p {{contact.lastContactDate | date}}

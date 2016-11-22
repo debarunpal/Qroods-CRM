@@ -45,7 +45,7 @@ A.app({
         fields: {
           firstName: Fields.text("First name").required(),
 		  lastName: Fields.text("Last name").required(),
-		  fullName: Fields.text('Full name').readOnly(),
+		  //fullName: Fields.text('Full name').readOnly(),
           email: Fields.email("Email").required(),
           phone: Fields.text("Phone").required(),
 		  contactBirthDate: Fields.date("Date of Birth"),
@@ -57,7 +57,7 @@ A.app({
 		beforeSave: function (Entity) {
 			Entity.fullName = Entity.firstName + ' ' + Entity.lastName;
 		},
-		showInGrid: ['fullName', 'email', 'phone'],
+		showInGrid: ['firstName', 'lastName', 'email', 'phone'],
         views: {  
           FlowBoard: {
             customView: "board" 
@@ -86,7 +86,7 @@ A.app({
         fields: {
           item: Fields.reference("Item", "Item"),
           order: Fields.reference("Order", "Order"),
-          orderItem: Fields.reference("Order item", "OrderItem"),
+          contact: Fields.reference("Contact", "Contact"),
           quantity: Fields.integer("Quantity")
         },
         showInGrid: ['item', 'order', 'quantity']
